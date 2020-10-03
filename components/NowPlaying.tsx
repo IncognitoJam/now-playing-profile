@@ -10,6 +10,7 @@ export interface Props {
   duration: number;
   isPlaying: boolean;
   dark: boolean;
+  width?: number;
 }
 
 export const Player: React.FC<Props> = ({
@@ -20,9 +21,10 @@ export const Player: React.FC<Props> = ({
   duration,
   isPlaying,
   dark,
+  width = 256,
 }) => {
   return (
-    <ReadmeImg width="300" height="64">
+    <ReadmeImg width={width} height="64">
       <style>
         {dark
           ? <style>{`

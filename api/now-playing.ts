@@ -23,7 +23,7 @@ export default async function (req: NowRequest, res: NowResponse) {
     return res.status(200).end();
   }
 
-  const { dark = false } = params || {};
+  const { width, dark = false } = params || {};
 
   res.setHeader("Content-Type", "image/svg+xml");
   res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
@@ -40,7 +40,7 @@ export default async function (req: NowRequest, res: NowResponse) {
 
   const artist = (item.artists || []).map(({ name }) => name).join(", ");
   const text = renderToString(
-    Player({ cover: coverImg, artist, track, isPlaying, progress, duration, dark })
+    Player({ cover: coverImg, artist, track, isPlaying, progress, duration, dark, width })
   );
   return res.status(200).send(text);
 }
