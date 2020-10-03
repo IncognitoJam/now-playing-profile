@@ -22,7 +22,7 @@ export const Player: React.FC<Props> = ({
   dark,
 }) => {
   return (
-    <ReadmeImg width="256" height="64">
+    <ReadmeImg width="300" height="64">
       <style>
         {dark
           ? <style>{`
