@@ -7,7 +7,8 @@ const sizes = {
 
 const colors = {
   default: "#24292e",
-  "gray-light": "#e1e4e8",
+  "light": "#f5f6f7",
+  "gray-light": "#edeff2",
   gray: "#586069",
   "gray-dark": "#24292e",
 };
