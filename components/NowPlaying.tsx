@@ -9,6 +9,7 @@ export interface Props {
   progress: number;
   duration: number;
   isPlaying: boolean;
+  dark: boolean;
 }
 
 export const Player: React.FC<Props> = ({
@@ -18,10 +19,21 @@ export const Player: React.FC<Props> = ({
   progress,
   duration,
   isPlaying,
+  dark,
 }) => {
   return (
     <ReadmeImg width="256" height="64">
       <style>
+        {dark
+          ? <style>{`
+            .progress-bar { border-color: #e1e4e8; }
+            #progress { background-color: #586069; }
+          `}</style>
+          : <style>{`
+            .progress-bar { border-color: #24292e; }
+            #progress { background-color: #24292e; }
+          `}</style>
+        }
         {`
             .paused { 
               animation-play-state: paused !important;
@@ -62,16 +74,6 @@ export const Player: React.FC<Props> = ({
               background-color: #24292e;
               animation: progress ${duration}ms linear;
               animation-delay: -${progress}ms;
-            }
-
-            @media (prefers-color-scheme: dark) {
-              .progress-bar {
-                border: 1px solid #e1e4e8;
-              }
-
-              #progress {
-                background-color: #586069;
-              }
             }
 
             .progress-bar,
@@ -154,10 +156,10 @@ export const Player: React.FC<Props> = ({
             marginLeft: 8,
           }}
         >
-          <Text id="track" weight="bold">
+          <Text id="track" weight="bold" color={dark ? "gray" : "default"}>
             {`${track ?? ""} `.trim()}
           </Text>
-          <Text id="artist" color={!track ? "gray" : undefined}>
+          <Text id="artist" color={!track ? (dark ? "gray-light" : "gray") : (dark ? "gray" : "default")}>
             {artist || "Nothing playing..."}
           </Text>
           {track && (
