@@ -45,7 +45,7 @@ export const Player: React.FC<Props> = ({
               width: 100%;
               height: 4px;
               margin: -1px;
-              border: 1px solid #e1e4e8;
+              border: 1px solid #24292e;
               border-radius: 4px;
               overflow: hidden;
               padding: 2px;
@@ -66,7 +66,7 @@ export const Player: React.FC<Props> = ({
 
             @media (prefers-color-scheme: dark) {
               .progress-bar {
-                border: 1px solid #24292e;
+                border: 1px solid #e1e4e8;
               }
 
               #progress {
