@@ -63,7 +63,17 @@ export const Player: React.FC<Props> = ({
               animation: progress ${duration}ms linear;
               animation-delay: -${progress}ms;
             }
-            
+
+            @media (prefers-color-scheme: dark) {
+              .progress-bar {
+                border: 1px solid #24292e;
+              }
+
+              #progress {
+                background-color: #586069;
+              }
+            }
+
             .progress-bar,
             #track,
             #artist,
