@@ -2,16 +2,48 @@ import { NowRequest, NowResponse } from "@vercel/node";
 import { renderToString } from "react-dom/server";
 import { decode } from "querystring";
 import { Player } from "../components/NowPlaying";
-import { nowPlaying } from "../utils/spotify";
+import { nowPlaying, recentlyPlayed } from '../utils/spotify';
+import { Track } from '../components/Track'
 
 export default async function (req: NowRequest, res: NowResponse) {
+  const params = decode(req.url.split("?")[1]) as any;
+
+  if (params && params.history) {
+    const {
+      items = [],
+    } = await recentlyPlayed();
+
+    // TODO: specify track number
+    const item = items[0];
+
+    if (typeof params.open !== "undefined") {
+      if (item && item.external_urls) {
+        res.writeHead(302, {
+          Location: item.external_urls.spotify,
+        });
+        return res.end();
+      }
+      return res.status(200).end();
+    }
+
+    const { width, dark = false } = params || {};
+
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate");
+
+    const { name: track } = item;
+    const artist = (item.artists || []).map(({ name }) => name).join(", ");
+    const text = renderToString(
+      Track({ artist, track, width })
+    );
+    return res.status(200).send(text);
+  }
+
   const {
     item = {},
     is_playing: isPlaying = false,
     progress_ms: progress = 0,
   } = await nowPlaying();
-
-  const params = decode(req.url.split("?")[1]) as any;
 
   if (params && typeof params.open !== "undefined") {
     if (item && item.external_urls) {

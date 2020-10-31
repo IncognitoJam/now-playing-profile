@@ -28,6 +28,34 @@ async function getAuthorizationToken() {
   return `Bearer ${response.access_token}`;
 }
 
+const serialise = (body) => {
+  return Object.entries(body).map(([key, value]) => {
+    return `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`;
+  }).join('&');
+}
+
+const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played`;
+
+export async function recentlyPlayed() {
+  const Authorization = await getAuthorizationToken();
+  const body = stringify({
+    limit: 5,
+  });
+  const response = await fetch(`${RECENTLY_PLAYED_ENDPOINT}?${serialise(body)}`, {
+    headers: {
+      Authorization,
+    },
+  });
+  const { status } = response;
+  if (status === 204) {
+    return {};
+  } else if (status === 200) {
+    return await response.json();
+  } else {
+    console.error('status:', status);
+  }
+}
+
 const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
 export async function nowPlaying() {
   const Authorization = await getAuthorizationToken();
@@ -40,7 +68,6 @@ export async function nowPlaying() {
   if (status === 204) {
     return {};
   } else if (status === 200) {
-    const data = await response.json();
-    return data;
+    return await response.json();
   }
 }
